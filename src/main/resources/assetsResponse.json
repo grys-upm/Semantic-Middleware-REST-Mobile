@@ -1,0 +1,92 @@
+{
+  "sequenceNumber":324,
+  "assetList": [
+    {
+      "deviceId": "Gamleby",
+      "type":"weatherStation",
+      "location": {
+        "latitude": 45.45123,
+        "longitude": 25.25456,
+        "altitude": 2.10789
+      },
+      "observations": [
+        {
+          "observedProperty": "wind_speed",
+          "time": "2020-07-02T17:27:00Z",
+          "value": 1.7,
+          "uom": "http://qudt.org/vocab/unit/M-PER-SEC"
+        },
+        {
+          "observedProperty": "wind_direction",
+          "time": "2020-07-02T17:27:00Z",
+          "value": 245,
+          "uom": "http://qudt.org/vocab/unit/DEG"
+        }
+      ]
+    },
+    {
+      "deviceId": "drone001",
+      "type":"GW",
+      "location": {
+        "latitude": 45.45123,
+        "longitude": 25.25456,
+        "altitude": 2.10789
+      },
+      "resources":[
+        {
+          "deviceId":"airHumiditySensor001",
+          "type":"environmental",
+          "observedProperty":"air_humidity",
+          "time": "2020-05-18T19:29:43Z",
+          "value":4.2,
+          "uom": "http://qudt.org/vocab/unit/PERCENT"
+        },
+        {
+          "deviceId":"airTemperatureSensor001",
+          "type":"environmental",
+          "observedProperty":"air_temperature",
+          "time": "2020-05-18T19:29:43Z",
+          "value":4.2,
+          "uom": "http://qudt.org/vocab/unit/DEG_G"
+        }
+      ]
+    },
+    {
+      "deviceId": "afc_node_0100_0",
+      "type":"soil",
+      "location": {
+        "latitude": 57.9202195,
+        "longitude": 16.4001396,
+        "altitude": -0.3
+      },
+      "observedProperty": "volumetric_water_content_mineral_soil",
+      "time": "2020-05-18T19:29:43Z",
+      "value": 529999999999998,
+      "uom": "http://qudt.org/vocab/unit/PERCENT"
+    },
+    {
+      "deviceId": "afc_node_0100_0",
+      "type":"collar",
+      "location": {
+        "latitude": 40.691355764,
+        "longitude": -4.538551919,
+        "altitude": 2.10789
+      },
+      "time":"2020-07-02T17:33:42Z",
+      "temperature":36.5,
+      "alarm":false,
+      "anomalies":{
+        "locationAnomaly": false,
+        "temperatureAnomaly": false,
+        "distanceAnomaly": false,
+        "activityAnomaly": true,
+        "positionAnomaly": false
+      },
+      "acceleration":{
+        "accX": 0.22331,
+        "accY": 0.898,
+        "accZ": 0.998
+      }
+    }
+  ]
+}

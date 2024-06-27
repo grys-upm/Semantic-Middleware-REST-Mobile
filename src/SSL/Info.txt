@@ -1,0 +1,9 @@
+
+-Directory prepared to introduce the Java Key Store for TLS encryption configuration for access to API services.
+
+-Directorio preparado para introducir los Java Key Store para la configuración de cifrado TLS en el acceso a los servicios de la API
+
+Example:
+ - mqttTrustStore.jks (Configure JavaKeyStore for MQTT conection)
+ - torcos.jks (JKS of the server in which it is intendeed to be deployed)
+ - torcos_etsist_upm_es_cert (Server certificate)

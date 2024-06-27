@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title":"Schema for alarms retrieved from AFC respository",
+  "type": "object",
+  "properties": {
+    "alarmCode": {
+      "type": "string"
+    },
+    "sequenceNumber": {
+      "type": "integer"
+    },
+    "message": {
+      "type": "string"
+    },
+    "resourceId": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "string",
+      "pattern": "low|medium|high"
+    },
+    "alarmTime": {
+      "type": "integer"
+    },
+    "status": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "alarmCode",
+    "sequenceNumber",
+    "message",
+    "resourceId",
+    "source",
+    "priority",
+    "alarmTime",
+    "status"
+  ]
+}

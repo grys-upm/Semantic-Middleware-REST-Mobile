@@ -1,0 +1,60 @@
+{ 
+    "$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"title": "Assets Request Schema",
+	"properties": {
+  "authKey":{
+	  "type": "string",
+	  "title": "The authentication key"
+	   },
+  "radius":{
+	  "type": "number",
+	  "title": "radius of the area"
+	   },
+    "location":
+    {
+      "type": "object",
+      "title": "The Location object",
+      "required": [
+        "latitude",
+        "longitude"
+      ],
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "title": "Latitude",
+          "default": 0.0,
+          "examples": [
+            45.45123
+          ]
+        },
+        "longitude": {
+          "type": "number",
+          "title": "Longitude",
+          "default": 0.0,
+          "examples": [
+            25.25456
+          ]
+        },
+        "altitude": {
+          "type": "number",
+          "title": "Altitude",
+          "default": 0.0,
+          "examples": [
+            2.10789
+          ]
+        }
+      },
+	  "additionalProperties": false
+    }
+
+   },	
+    "required":
+    [
+	"authKey",
+	"location",
+	"radius"
+	],
+	
+    "additionalProperties": false
+  }    

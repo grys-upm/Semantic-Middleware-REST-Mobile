@@ -1,0 +1,266 @@
+openapi: 3.0.0
+info:
+  version: 1.0.1
+  title: UPM REST Mobile Server
+  description: 'This is one of the components of the AFarCloud project. The REST API for the mobile application. This API provides the information regarding the observations captured by the AFC devices in a given area. In addition, it allows knowing the status of alarms, as well as generating new alarms or modifying the status of existing ones.'
+  contact:
+    name: Mario San Emeterio - UPM
+    email: mario.sanemeterio@upm.es
+externalDocs:
+   description: Find out more about AFarCloud
+   url: http://www.afarcloud.eu/    
+tags:
+  - name: Get Resources
+  
+paths:
+  "/getList/{scenario}":
+    servers:
+      - url: https://torcos.etsist.upm.es:9212/
+        description: PROD
+    post:
+      tags:
+        - Get Resources
+      summary: Get resources list  
+      operationId: getList 
+      parameters: 
+        - name: scenario
+          in: path            
+          description: AFarCloudScenario.
+          required: true
+          schema:
+            type: string
+          example: AS01
+        - name: timewindow
+          in: query            
+          description: Time window in which the information is to be paid out. Integer symbolizing the number of months.
+          required: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/GetAssetsSchema'
+            examples:
+              Request:
+                $ref: '#/components/examples/GetAssetsRequest'
+        required: true
+      responses:
+        "200":
+          description: "Successful operation"
+          content:
+           application/json:
+            examples:
+             Response:
+              $ref: '#/components/examples/ExampleResponse'
+           
+        "415":
+          description: "Invalid input: not AFarCloud-compliant"
+        "400":
+          description: "Invalid input: not a JSON"
+        "500":
+          description: "Internal Server Error" 
+    
+  "/alarms/{scenario}/postAlarm":
+    servers:
+      - url: https://torcos.etsist.upm.es:9212/
+        description: Alarms inyection
+    post:
+      tags:
+        - Alarms
+      summary: Add a new alarm/s to the Data Base
+      operationId: addAlarm 
+      parameters: 
+        - name: scenario
+          in: path            
+          description: AFarCloudScenario.
+          required: true
+          schema:
+            type: string
+          example: AS01
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/AlarmSchema'
+            examples:
+              Request:
+                $ref:  '#/components/examples/Alarm'
+        required: true
+      responses:
+        "200":
+          description: "Successful operation"
+        "415":
+          description: "Invalid input: not AFarCloud-compliant"
+        "400":
+          description: "Invalid input: not a JSON"
+        "404":
+          description: "Asset not registered in AFarCloud repositories"
+        "500":
+          description: "Internal Server Error" 
+
+  "/alarms/{scenario}/updateAlarm/{resourceId}":
+    servers:
+      - url: https://torcos.etsist.upm.es:9212/
+        description: Alarms update
+    put:
+      tags:
+        - Alarms
+      summary: Updates the alarm with the specific deviceId with the new status
+      operationId: updateAlarm 
+      parameters: 
+        - name: scenario
+          in: path            
+          description: AFarCloudScenario.
+          required: true
+          schema:
+            type: string
+          example: AS01
+        - name: resourceId
+          in: path            
+          description: Identifier of the device.
+          required: true
+          schema:
+            type: string
+          example: sensor_airt_01
+        - name: alarmtime
+          in: query            
+          description: EpochTime.
+          required: true
+          schema:
+            type: integer
+          example: 1564686378
+        - name: status
+          in: query            
+          description: Status to be updated.
+          required: true
+          schema:
+            type: integer
+          example: 1
+     
+      responses:
+        "200":
+          description: "Successful operation"  
+        "400":
+          description: "Invalid input: not AFarCloud-compliant"
+        "404":
+          description: "Asset not registered in AFarCloud repositories"
+        "500":
+          description: "Internal Server Error" 
+
+servers:
+  - url: https://torcos.etsist.upm.es:9212/
+    
+components:
+  schemas:
+    AlarmSchema:
+      title: Schema for list of alarms retrieved from AFC respository
+      type: object
+      properties:
+        alarmCode:
+          type: string
+        sequenceNumber:
+          type: integer
+        message:
+          type: string
+        resourceId:
+          type: string
+        source:
+          type: string
+        priority:
+          type: string
+          pattern: "low|medium|high"
+        alarmTime:
+          type: integer
+        status:
+          type: integer
+          minimum: 0
+          maximum: 2
+      required:
+        - alarmCode
+        - sequenceNumber
+        - message
+        - resourceId
+        - source
+        - priority
+        - alarmTime
+        - status
+        
+    GetAssetsSchema:
+      type: object
+      title: Assets Request Schema
+      properties:
+        authKey:
+          type: string
+          title: The authentication key
+        radius:
+          type: number
+          title: radius of the area
+        location:
+          type: object
+          title: The Location object
+          required:
+            - latitude
+            - longitude
+            - altitude
+          properties:
+            latitude:
+              type: number
+              title: Latitude
+              default: 0
+
+            longitude:
+              type: number
+              title: Longitude
+              default: 0
+     
+            altitude:
+              type: number
+              title: Altitude
+              default: 0
+             
+          additionalProperties: false
+      required:
+        - authKey
+        - location
+        - radius
+      additionalProperties: false
+  examples:
+   Alarm:
+    value:
+      alarmCode: UPM_TESTS
+      sequenceNumber: 3
+      message: UPM message
+      resourceId: sensor_airt_01
+      source: farmer
+      priority: high
+      alarmTime: 1564686378
+      status: 1
+    
+   GetAssetsRequest:
+    value:
+     authKey: 37250E0C324781ZZ9XX
+     location:
+      latitude: 45.45123
+      longitude: 25.25455
+      altitude: 57.5
+     radius: 150.25
+   ExampleResponse: 
+    value:
+      assetList:
+        - deviceId: 'urn:afc:AS04:droneMissions:MDH:GW:drone001'
+          type: airSensor
+          location:
+            latitude: 45.45123
+            longitude: 25.25456
+            altitude: 2.10789
+          observations:
+            - observedProperty: fake_UPM_1
+              time: '2019-09-11T05:52:45Z'
+              uom: 'http://qudt.org/vocab/unit/DEG_C'
+              value: 19.64
+            - observedProperty: fake_UPM_2
+              time: '2019-09-11T05:52:45Z'
+              uom: 'http://qudt.org/vocab/unit/DEG_C'
+              value: 19.64
+      sequenceNumber: 123
